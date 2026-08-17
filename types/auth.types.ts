@@ -9,3 +9,13 @@ export interface RegisterPayload {
     businessName?: string;
     phone?: string;
 }
+
+export interface RegisterResponse {
+    message?: string;
+    success?: boolean;
+    data?: unknown;
+}
+
+export interface ApiErrorResponse {
+    message?: string;
+}
