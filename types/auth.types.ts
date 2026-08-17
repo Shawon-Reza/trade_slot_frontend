@@ -19,3 +19,5 @@ export interface RegisterResponse {
 export interface ApiErrorResponse {
     message?: string;
 }
+
+export type ActiveMode = "CUSTOMER" | "TRADER";

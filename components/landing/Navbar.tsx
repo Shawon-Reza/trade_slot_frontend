@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Menu, X } from 'lucide-react';
+import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 const navItems = [
   { label: 'How it works', href: '#how-it-works' },
@@ -14,6 +16,12 @@ const navItems = [
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  console.log(session)
+
+
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
@@ -38,14 +46,46 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors">
-              Login
-            </Link>
-            <Link href="/register">
-              <Button size="sm">Get Started</Button>
-            </Link>
-          </div>
+
+
+
+          {
+            session ? (
+
+              <button
+                className="cursor-pointer"
+                onClick={() => {
+                  const user = session?.user as
+                    | (typeof session.user & {
+                      activeMode: "CUSTOMER" | "TRADER";
+                    })
+                    | undefined;
+
+                  if (!user) {
+                    router.push("/login");
+                    return;
+                  }
+
+                  if (user.activeMode === "CUSTOMER") {
+                    router.push("/customer/dashboard");
+                  } else {
+                    router.push("/trader/dashboard");
+                  }
+                }}
+              >
+                Dashboard
+              </button>
+            ) : (
+              <div className="hidden md:flex items-center gap-3">
+                <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors">
+                  Login
+                </Link>
+                <Link href="/register">
+                  <Button size="sm">Get Started</Button>
+                </Link>
+              </div>
+            )
+          }
 
           <button
             className="md:hidden p-2 rounded-lg text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
