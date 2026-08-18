@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers/QueryProvider";
 import { authService } from "@/services/auth.service";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ console.log(session)
         <Providers>
           {children}
         </Providers>
+         <Toaster />
       </body>
     </html>
   );

@@ -9,12 +9,16 @@ import { Label } from '@/components/ui/Label';
 import { Checkbox } from '@/components/ui/Checkbox';
 import Link from 'next/link';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface LoginFormProps {
   onSuccess?: () => void;
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -29,9 +33,29 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
     // Mock authentication
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    
+
     if (email && password) {
-      onSuccess?.();
+
+      try {
+        const { data, error } = await authClient.signIn.email({
+          email: email,
+          password: password,
+          rememberMe: rememberMe
+        });
+        toast.success("Login successful!", {
+          description: `Welcome , ${data?.user?.name ?? data?.user?.email}!`,
+          position: "top-right",
+        },
+
+        );
+
+        router.replace('/');
+
+        console.log('Login response:', { data, error });
+      } catch (error) {
+        console.error('Login error:', error);
+      }
+
     } else {
       setError('Please enter both email and password');
     }
@@ -120,7 +144,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       </form>
 
       <p className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
-        Don't have an account?{' '}
+        Dont have an account?{' '}
         <Link href="/register" className="font-medium text-black hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
           Create one
         </Link>

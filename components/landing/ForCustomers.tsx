@@ -46,7 +46,7 @@ export function ForCustomers() {
           {customerFeatures.map((feature) => (
             <div
               key={feature.title}
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md  transition-all hover:scale-125 transform duration-700 "
             >
               <div className="h-12 w-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
                 <feature.icon className="h-6 w-6 text-zinc-600 dark:text-zinc-400" />

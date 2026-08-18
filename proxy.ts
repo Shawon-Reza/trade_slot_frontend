@@ -13,7 +13,7 @@ const session= await authService.getSession()
 //   });
 
   // User is not logged in
-  if (!session?.data.user) {
+  if (!session?.data?.user) {
     return NextResponse.redirect(
       new URL("/login", request.url)
     );
