@@ -50,7 +50,7 @@ export function RegisterForm({ onSuccess, initialType = 'customer' }: RegisterFo
     onSuccess: (data) => {
       console.log('Register success:', data);
       onSuccess?.();
-      router.push('/login');
+      router.push('/');
     },
 
     onError: (err: AxiosError<ApiErrorResponse>) => {

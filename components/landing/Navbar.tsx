@@ -4,11 +4,14 @@ import * as React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { Menu, X } from 'lucide-react';
+import { Axis3D, Menu, X } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import SidebarDrawer from './SidebarDrawer';
+import { useMutation } from '@tanstack/react-query';
+import { axiosApi } from '@/lib/axios';
+import { baseURL } from '@/services/auth.service';
 
 const navItems = [
   { label: 'How it works', href: '#how-it-works' },
@@ -20,20 +23,35 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending, refetch: sessionRefetch } = authClient.useSession();
   console.log(session)
 
 
+  const activemodeMutation = useMutation({
+    mutationKey: ["activeModeToggle"],
+    mutationFn: () => {
+      const response = axiosApi.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/activeMode/toggle`)
+      return response
+    },
+    onSuccess: async (data) => {
+      // window.location.reload()
+      await sessionRefetch();
+      console.log(data)
+    }
+
+
+  })
+
 
   return (
-    <nav className=" fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
+    <nav className=" fixed top-0 left-0 right-0 z-50 bg-[#2E3A44] dark:bg-zinc-900/80 backdrop-blur-sm  border-zinc-200 dark:border-zinc-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2" aria-label="TradeSlot Home">
             <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
               <span className="text-white font-bold text-lg">TS</span>
             </div>
-            <span className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">TradeSlot</span>
+            <span className="font-semibold text-lg text-white dark:text-zinc-100">TradeSlot</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -41,7 +59,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+                className="text-sm font-medium text-white hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
               >
                 {item.label}
               </Link>
@@ -91,20 +109,14 @@ export function Navbar() {
                           const newMode = e.target.value as "CUSTOMER" | "TRADER";
 
                           console.log("New mode selected:", newMode);
-
-                          // Later:
-                          // await axiosApi.patch("/api/auth/active-mode", {
-                          //   activeMode: newMode,
-                          // });
-
-                          // router.refresh();
+                          activemodeMutation.mutate();
                         }}
                       >
                         <option value="CUSTOMER">Customer</option>
                         <option value="TRADER">Trader</option>
                       </select>
 
-                      
+
                       <SidebarDrawer />
 
                     </>

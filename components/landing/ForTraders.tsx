@@ -46,7 +46,7 @@ export function ForTraders() {
           {traderFeatures.map((feature) => (
             <div
               key={feature.title}
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-all hover:scale-105 transform duration-700 "
             >
               <div className="h-12 w-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
                 <feature.icon className="h-6 w-6 text-zinc-600 dark:text-zinc-400" />
@@ -57,13 +57,13 @@ export function ForTraders() {
           ))}
         </div>
 
-        <div className="mt-16 p-8 bg-zinc-900 dark:bg-zinc-100 rounded-2xl text-center">
+        <div className="mt-16 p-8 bg-zinc-900 dark:bg-zinc-100 rounded-2xl text-center bg-[url(https://res.cloudinary.com/dbmdhxmtx/image/upload/v1787074032/Gemini_Generated_Image_i55glii55glii55g_tekjj3.jpg)] bg-cover bg-center bg-no-repeat">
           <h3 className="text-2xl font-bold text-white dark:text-zinc-900 mb-4">Ready to grow your business?</h3>
           <p className="text-zinc-300 dark:text-zinc-600 mb-6 max-w-xl mx-auto">
             Join hundreds of tradespeople already using TradeSlot to fill their schedules and get paid on time.
           </p>
           <Link href="/register?type=trader">
-            <Button size="lg" variant="secondary" className="gap-2">
+            <Button size="lg" variant="secondary" className="gap-2 rounded-xl hover:scale-105 transform transition-all duration-700 ease-in-out">
               Join as a Trader
               <MapPin className="h-5 w-5" />
             </Button>

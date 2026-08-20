@@ -77,6 +77,7 @@ export default function SidebarDrawer() {
   return (
     <Drawer
       swipeDirection="right"
+     
     >
       {/* Trigger */}
       <DrawerTrigger >
@@ -107,36 +108,36 @@ export default function SidebarDrawer() {
 
           {/* Navigation */}
           <nav className="flex-1 p-4">
-  <div className="space-y-1">
-    {(() => {
-      const activeMode = session?.user
-        ? (session.user as typeof session.user & {
-            activeMode: "CUSTOMER" | "TRADER";
-          }).activeMode
-        : "CUSTOMER";
+            <div className="space-y-1">
+              {(() => {
+                const activeMode = session?.user
+                  ? (session.user as typeof session.user & {
+                    activeMode: "CUSTOMER" | "TRADER";
+                  }).activeMode
+                  : "CUSTOMER";
 
-      const navigationItems =
-        activeMode === "TRADER"
-          ? navigationItemsForTrader
-          : navigationItemsForCustomer;
+                const navigationItems =
+                  activeMode === "TRADER"
+                    ? navigationItemsForTrader
+                    : navigationItemsForCustomer;
 
-      return navigationItems.map((item) => {
-        const Icon = item.icon;
+                return navigationItems.map((item) => {
+                  const Icon = item.icon;
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
-          >
-            <Icon className="h-5 w-5" />
-            <span>{item.title}</span>
-          </Link>
-        );
-      });
-    })()}
-  </div>
-</nav>
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span>{item.title}</span>
+                    </Link>
+                  );
+                });
+              })()}
+            </div>
+          </nav>
 
 
 
@@ -158,7 +159,7 @@ export default function SidebarDrawer() {
                     toast.success("Logged out successfully!", {
                       position: "top-right",
                     });
-                   
+
                   } catch (error) {
                     toast.error("Failed to log out.", {
                       position: "bottom-right",

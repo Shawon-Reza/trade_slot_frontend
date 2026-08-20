@@ -39,10 +39,11 @@ export function HowItWorks() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
+
           {steps.map((step, index) => (
             <div
               key={step.number}
-              className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 transition-shadow hover:shadow-lg"
+              className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 transition-all hover:shadow-lg hover:scale-105 transform duration-700"
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl font-bold text-zinc-300 dark:text-zinc-700">{step.number}</span>
@@ -62,7 +63,9 @@ export function HowItWorks() {
               )}
             </div>
           ))}
+          
         </div>
+
       </div>
     </section>
   );
