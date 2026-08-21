@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { toast } from 'sonner';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosApi } from '@/lib/axios';
 
 interface SetWorkAreaModalProps {
@@ -24,6 +24,7 @@ export function SetWorkAreaModal({ isOpen, onClose, onSubmit, isLoading = false 
 
   // Get today's date in YYYY-MM-DD format for min attribute
   const today = new Date().toISOString().split('T')[0];
+  const queryClient = useQueryClient();
 
   React.useEffect(() => {
     if (isOpen) {
@@ -44,8 +45,10 @@ export function SetWorkAreaModal({ isOpen, onClose, onSubmit, isLoading = false 
       return response.data;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["work_area_list"] });
       toast.success("Successfully Set work area")
       onClose()
+
     },
 
     onError: () => {
