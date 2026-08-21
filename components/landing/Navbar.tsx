@@ -103,13 +103,19 @@ export function Navbar() {
                       <select
                         name="activeMode"
                         id="activeMode"
-                        value={user?.activeMode ?? "CUSTOMER"}
+                        value={
+                          activemodeMutation.isPending
+                            ? "Profile Changing..."
+                            : user?.activeMode ?? "CUSTOMER"
+                        }
+                        disabled={activemodeMutation.isPending}
                         className="bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-lg px-2 py-1"
                         onChange={async (e) => {
                           const newMode = e.target.value as "CUSTOMER" | "TRADER";
 
                           console.log("New mode selected:", newMode);
                           activemodeMutation.mutate();
+
                         }}
                       >
                         <option value="CUSTOMER">Customer</option>

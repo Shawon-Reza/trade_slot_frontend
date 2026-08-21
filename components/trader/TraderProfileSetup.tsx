@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { axiosApi } from '@/lib/axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 interface BusinessType {
   id: string;
@@ -28,7 +29,7 @@ export function TraderProfileSetup({ onComplete }: TraderProfileSetupProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Fetch business types from API
+  //----------------- get all business types ---------------------
   const { data: businessTypes = [], isLoading: typesLoading, error: typesError } = useQuery<BusinessType[]>({
     queryKey: ['businessTypes'],
     queryFn: async () => {
@@ -43,23 +44,31 @@ export function TraderProfileSetup({ onComplete }: TraderProfileSetupProps) {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const filteredTypes = businessTypes.filter(type =>
-    type.name.toLowerCase().includes(businessType.toLowerCase())
-  );
+  console.log(businessTypes)
+
+
+
+  //  ---------------------- Create Trader Profile ---------------------
 
   const createTraderProfile = useMutation({
+
     mutationFn: async (data: { businessType: string }) => {
-      const res = await axiosApi.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/trader/profile`, data);
+      const res = await axiosApi.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/trader/createProfile`, data);
       return res.data;
     },
     onSuccess: () => {
       onComplete();
+      toast.success("Your trader profile ready", {
+        position: "bottom-right",
+      });
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || 'Failed to create trader profile');
       setIsSubmitting(false);
     },
   });
+
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,15 +139,26 @@ export function TraderProfileSetup({ onComplete }: TraderProfileSetupProps) {
                 <select
                   id="businessType"
                   value={businessType}
-                  onChange={(e) => setBusinessType(e.target.value)}
+                  onChange={(e) => {
+                    setBusinessType(e.target.value)
+                    console.log(e.target.value)
+                  }}
+
                   className="w-full pl-10 pr-4 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
                   required
                   disabled={isSubmitting}
                 >
                   <option value="">Select your trade</option>
-                  {filteredTypes.map((type) => (
-                    <option key={type.id} value={type.name}>{type.name}</option>
+                  {businessTypes.map((type) => (
+
+                    <option key={type.id}
+                      onClick={() => {
+                        console.log(type)
+                      }}
+                      value={type.id}>{type.name}
+                    </option>
                   ))}
+
                 </select>
               </div>
             </div>
