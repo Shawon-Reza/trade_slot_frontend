@@ -6,14 +6,14 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Button } from '@/components/ui/Button';
-import { WorkAreaCard } from '@/components/trader/WorkAreaCard';
 import { UpcomingBookings } from '@/components/trader/UpcomingBookings';
 import { RecentActivity } from '@/components/trader/RecentActivity';
 import { TraderProfileSetup } from '@/components/trader/TraderProfileSetup';
+
 import { mockTraderStats, mockTrader, navItemsTrader } from '@/lib/mock-data';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosApi } from '@/lib/axios';
 
 const navItems = navItemsTrader.map(item => ({
@@ -44,7 +44,7 @@ function DashboardLoading() {
       user={{
         name: 'Loading...',
         email: '',
-        onLogout: () => {},
+        onLogout: () => { },
       }}
       headerTitle="Dashboard"
       headerBreadcrumb="Trader"
@@ -79,7 +79,7 @@ function DashboardError({ message, onRetry }: { message: string; onRetry: () => 
       user={{
         name: 'Error',
         email: '',
-        onLogout: () => {},
+        onLogout: () => { },
       }}
       headerTitle="Dashboard"
       headerBreadcrumb="Trader"
@@ -99,13 +99,15 @@ function DashboardError({ message, onRetry }: { message: string; onRetry: () => 
   );
 }
 
-export default function TraderDashboardPage() {
+function DashboardContent() {
   const router = useRouter();
+
+  const queryClient = useQueryClient();
 
   // Session hook - always called first
   const { data: session, isPending: sessionLoading, refetch: sessionRefetch } = authClient.useSession();
 
-  // Trader existence query - always called, but enabled conditionally
+  // Check trader profile existance
   const { data: traderProfile, isLoading: profileLoading, error: profileError, refetch: refetchProfile } = useQuery({
     queryKey: ['traderExistance'],
     queryFn: async () => {
@@ -113,15 +115,11 @@ export default function TraderDashboardPage() {
         const res = await axiosApi.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/trader/traderExistance`
         );
-        console.log("asdsfsed============================", res)
         return res.data;
-
-
       } catch (error: any) {
         if (error.response?.status === 404) {
           return null;
         }
-
         throw error;
       }
     },
@@ -129,7 +127,25 @@ export default function TraderDashboardPage() {
     refetchOnMount: "always",
   });
 
-  console.log("----------------------------------------", traderProfile)
+  // Work Areas Query
+  // const { data: workAreas = [], refetch: refetchWorkAreas } = useQuery({
+  //   queryKey: ['workAreas'],
+  //   queryFn: async () => {
+  //     const res = await axiosApi.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/work-areas/`);
+  //     return res.data;
+  //   },
+  //   enabled: !!traderProfile?.traderExistance,
+  //   staleTime: 1000 * 60 * 2,
+  // });
+
+  // Listen for work area updates
+  React.useEffect(() => {
+    const handleUpdate = () => {
+      queryClient.invalidateQueries({ queryKey: ['workAreas'] });
+    };
+    window.addEventListener('workAreaUpdated', handleUpdate);
+    return () => window.removeEventListener('workAreaUpdated', handleUpdate);
+  }, [queryClient]);
 
   // Early returns for loading/error states (after hooks)
   if (sessionLoading) {
@@ -137,7 +153,6 @@ export default function TraderDashboardPage() {
   }
 
   if (!session) {
-    // Redirect will be handled by layout or middleware
     return null;
   }
 
@@ -149,7 +164,7 @@ export default function TraderDashboardPage() {
 
   const activeMode = user?.activeMode;
 
-  // Handle CUSTOMER mode - redirect to customer dashboard
+  // Handle CUSTOMER mode
   if (activeMode === 'CUSTOMER') {
     return (
       <DashboardLayout
@@ -193,7 +208,7 @@ export default function TraderDashboardPage() {
     );
   }
 
-  // Profile doesn't exist - show setup centered on screen
+  // Profile doesn't exist - show setup
   if (!traderProfile?.traderExistance) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
@@ -228,7 +243,7 @@ export default function TraderDashboardPage() {
         <SectionHeader
           title="Overview"
           action={
-            <Button variant="primary" size="sm" className="gap-1.5">
+            <Button variant="primary" size="sm" className="gap-1.5" >
               <Plus className="h-4 w-4" />
               Set Work Area
             </Button>
@@ -250,7 +265,7 @@ export default function TraderDashboardPage() {
 
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <WorkAreaCard />
+
             <UpcomingBookings />
           </div>
           <div className="space-y-6">
@@ -259,5 +274,13 @@ export default function TraderDashboardPage() {
         </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function TraderDashboardPage() {
+  return (
+
+    <DashboardContent />
+
   );
 }
