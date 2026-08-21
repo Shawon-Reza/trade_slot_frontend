@@ -163,7 +163,7 @@ export default function TraderWorkAreaPage() {
           }
         />
 
-        {/* Work Areas List */}
+        {/* ======================= Work Areas List ===================== */}
         {isLoading ? (
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
             <div className="space-y-4">
@@ -194,6 +194,21 @@ export default function TraderWorkAreaPage() {
             <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
               <h3 className="font-medium text-zinc-900 dark:text-zinc-100">All Work Areas</h3>
             </div>
+
+            {/* ----------------- Today work area list ---------------- */}
+
+          </div>
+        )}
+
+
+
+
+        {/*  ---------------------- Future date work-areas---------------------- */}
+        <SectionHeader title="Upcoming Work Areas" />
+
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
+            {/* <p className="text-sm text-zinc-500 dark:text-zinc-400">Work area scheduling will be available soon.</p> */}
             <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
               {workAreas.map((workArea: WorkArea) => (
                 <div key={workArea.id} className="p-4 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
@@ -232,14 +247,6 @@ export default function TraderWorkAreaPage() {
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        <SectionHeader title="Upcoming Work Areas" />
-
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
-          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">Work area scheduling will be available soon.</p>
           </div>
         </div>
       </div>
