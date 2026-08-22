@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { motion } from "framer-motion";
 import { Users, Calendar, CreditCard, Shield, MapPin, Smartphone } from 'lucide-react';
 
 const traderFeatures = [
@@ -32,7 +33,18 @@ const traderFeatures = [
 export function ForTraders() {
   return (
     <section id="for-traders" className="py-20 lg:py-28 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{
+          once: false,
+          amount: 0.2,
+        }}
+        transition={{
+          duration: 1.9,
+          ease: "easeOut",
+        }}
+        className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
             Built for tradespeople
@@ -69,7 +81,7 @@ export function ForTraders() {
             </Button>
           </Link>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

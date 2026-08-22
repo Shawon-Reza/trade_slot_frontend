@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
+import { motion } from "framer-motion";
 import { Search, MapPin, Clock, CheckCircle, Shield, MessageSquare, CreditCard } from 'lucide-react';
 
 const customerFeatures = [
@@ -31,8 +32,19 @@ const customerFeatures = [
 
 export function ForCustomers() {
   return (
-    <section id="for-customers" className="py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-900">
-      <div className="max-w-7xl mx-auto">
+    <section id="for-customers" className="py-10 lg:py-16 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-900">
+      <motion.div
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{
+          once: false,
+          amount: 0.2,
+        }}
+        transition={{
+          duration: 1.9,
+          ease: "easeOut",
+        }}
+        className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
             For homeowners & businesses
@@ -56,7 +68,7 @@ export function ForCustomers() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

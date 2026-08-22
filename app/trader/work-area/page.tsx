@@ -182,7 +182,7 @@ export default function TraderWorkAreaPage() {
       headerTitle="Work Area"
       headerBreadcrumb="Trader / Dashboard"
     >
-      <div className="space-y-8 max-w-3xl mx-auto">
+      <div className="space-y-8 max-w-5xl mx-auto">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Work Area</h1>
           <p className="text-zinc-600 dark:text-zinc-400 mt-1">Set your daily service area and travel buffer.</p>

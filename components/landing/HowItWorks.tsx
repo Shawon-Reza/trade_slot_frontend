@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { motion } from "framer-motion";
 import { Search, Clock, CheckCircle, MapPin, MessageSquare, CreditCard } from 'lucide-react';
 
 const steps = [
@@ -28,7 +29,18 @@ const steps = [
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-900">
-      <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{
+          once: false,
+          amount: 0.2,
+        }}
+        transition={{
+          duration: 1.9,
+          ease: "easeOut",
+        }}
+        className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
             How it works
@@ -53,7 +65,7 @@ export function HowItWorks() {
               </div>
               <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">{step.title}</h3>
               <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">{step.description}</p>
-              
+
               {index < steps.length - 1 && (
                 <div className="absolute right-[-20px] top-1/2 -translate-y-1/2 hidden lg:block">
                   <svg className="h-6 w-6 text-zinc-300 dark:text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,10 +75,10 @@ export function HowItWorks() {
               )}
             </div>
           ))}
-          
+
         </div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }
