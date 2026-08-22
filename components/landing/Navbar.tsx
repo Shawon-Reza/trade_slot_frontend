@@ -12,6 +12,7 @@ import SidebarDrawer from './SidebarDrawer';
 import { useMutation } from '@tanstack/react-query';
 import { axiosApi } from '@/lib/axios';
 import { baseURL } from '@/services/auth.service';
+import ParticleText from '../ParticleText';
 
 const navItems = [
   { label: 'How it works', href: '#how-it-works' },
@@ -48,10 +49,31 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2" aria-label="TradeSlot Home">
-            <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
-              <span className="text-white font-bold text-lg">TS</span>
-            </div>
-            <span className="font-semibold text-lg text-white dark:text-zinc-100">TradeSlot</span>
+
+
+            <span className="font-semibold text-lg text-white dark:text-zinc-100 w-[200px]">
+              <ParticleText
+                text="TradeSlot"
+                particleSize={1.5}
+                density={3}
+                color="#f8fafc"
+                highlightColor="#8b5cf6"
+                scatter={190}
+                gatherDuration={1600}
+                stagger={420}
+                pointerRepel={42}
+                repelRadius={20}
+                idleDrift={0.8}
+                trigger="mount"
+                fontSize="clamp(3.5rem, 13vw, 9rem)"
+                fontWeight={900}
+                fontFamily="inherit"
+                glow
+              />
+            </span>
+
+
+
           </Link>
 
           <div className="hidden md:flex items-center gap-8">

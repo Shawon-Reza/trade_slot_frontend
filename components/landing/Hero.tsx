@@ -133,7 +133,7 @@ export function Hero() {
             </Link>
 
             <Link href="/register?type=trader">
-              <Button  size="xl" className="text-white rounded-xl hover:scale-105 transform transition-all duration-700 ease-in-out" >
+              <Button size="xl" className="text-white rounded-xl hover:scale-105 transform transition-all duration-700 ease-in-out" >
                 Join as a Trader
               </Button>
             </Link>
