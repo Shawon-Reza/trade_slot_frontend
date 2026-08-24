@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 
+import { motion } from "framer-motion";
+
 export function Hero() {
   return (
     <section
@@ -23,8 +25,18 @@ export function Hero() {
       {/* Optional dark overlay */}
       <div className="absolute inset-0 bg-black/10" />
 
-      {/* Content */}
-      <div
+      {/*-----------------  Content ---------------- */}
+      < motion.div
+        initial={{ opacity: 0, x: -80 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{
+          once: false,
+          amount: 0.2,
+        }}
+        transition={{
+          duration: 1.9,
+          ease: "easeOut",
+        }}
         className="
           relative
           z-10
@@ -139,7 +151,7 @@ export function Hero() {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
